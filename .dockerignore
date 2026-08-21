@@ -1,0 +1,4 @@
+# The build image copies nothing — the source tree is bind-mounted at run time
+# (see build.sh), so the build context can be empty. Without this, every
+# `docker build` would ship node_modules/ and dist/ to the daemon for nothing.
+*

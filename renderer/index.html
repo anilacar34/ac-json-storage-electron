@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AC JSON Storage</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/vendor/vanilla-jsoneditor/themes/jse-theme-dark.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-icon">{ }</span>
+          <span class="brand-text">AC JSON Storage</span>
+        </div>
+        <div class="sidebar-header">
+          <input id="search" type="search" placeholder="Search..." data-i18n-placeholder="search.placeholder" />
+          <button id="advanced-search-btn" type="button" class="chip" data-i18n="search.advanced">Advanced</button>
+        </div>
+
+        <div id="advanced-search" class="advanced-search hidden">
+          <label><input type="checkbox" id="search-field-name" checked /> <span data-i18n="search.fieldName">Name</span></label>
+          <label><input type="checkbox" id="search-field-folder" checked /> <span data-i18n="search.fieldFolder">Folder</span></label>
+          <label><input type="checkbox" id="search-field-tag" checked /> <span data-i18n="search.fieldTag">Tag</span></label>
+        </div>
+
+        <div class="filters">
+          <div class="filter-block">
+            <div class="filter-title-row">
+              <span class="filter-title" data-i18n="sidebar.folders">Folders</span>
+              <button id="clear-folders-btn" type="button" class="clear-link" data-i18n="common.clear">Clear</button>
+            </div>
+            <div id="folder-list" class="chip-list folder-list-scroll"></div>
+          </div>
+          <div class="filter-block">
+            <div class="filter-title-row">
+              <span class="filter-title" data-i18n="sidebar.tags">Tags</span>
+              <button id="clear-tags-btn" type="button" class="clear-link" data-i18n="common.clear">Clear</button>
+            </div>
+            <div id="tag-list" class="chip-list"></div>
+          </div>
+        </div>
+
+        <div class="list-header">
+          <span class="filter-title" data-i18n="sidebar.files">Files</span>
+          <div class="list-header-actions">
+            <button id="details-toggle-btn" type="button" class="chip" data-i18n="sidebar.details">Details</button>
+            <button id="select-mode-btn" type="button" class="chip" data-i18n="sidebar.selectMode">Select</button>
+          </div>
+        </div>
+        <ul id="doc-list" class="doc-list"></ul>
+
+        <div id="selection-bar" class="selection-bar hidden">
+          <div class="selection-bar-row">
+            <span id="selection-count"></span>
+            <button id="open-new-window-btn" type="button" data-i18n="selection.openNewGroup">Open in new group</button>
+            <button id="clear-selection-btn" type="button" data-i18n="selection.cancel">Cancel</button>
+          </div>
+          <div id="selection-open-list" class="selection-open-list"></div>
+        </div>
+      </aside>
+
+      <main class="editor-pane">
+        <div id="group-tabs" class="group-tabs"></div>
+        <div class="panes-toolbar">
+          <div class="toolbar-left">
+            <button id="toggle-sidebar-btn" type="button" title="Show/hide sidebar" data-i18n-title="toolbar.toggleSidebar">☰</button>
+            <button id="add-pane-btn" type="button" data-i18n="toolbar.addPane">+ Add Editor</button>
+            <button id="compare-btn" type="button" data-i18n="toolbar.compare">Compare</button>
+            <div id="remove-pane-group" class="pane-remove-group">
+              <button id="remove-pane-btn" type="button" data-i18n="toolbar.removePane">- Remove Editor</button>
+              <button id="remove-pane-menu-btn" type="button" title="Select editors to remove" data-i18n-title="toolbar.removePaneMenu">▾</button>
+            </div>
+          </div>
+          <div class="toolbar-right">
+            <button id="theme-toggle-btn" type="button" class="chip" title="Toggle theme" data-i18n-title="toolbar.themeToggle">🌙</button>
+            <button id="lang-toggle-btn" type="button" class="chip" title="Switch language" data-i18n-title="toolbar.langToggle">TR</button>
+          </div>
+        </div>
+        <div id="panes-container" class="panes-stack"></div>
+      </main>
+    </div>
+
+    <div id="preview-modal" class="modal-backdrop hidden">
+      <div class="modal">
+        <div class="modal-header">
+          <span data-i18n="modal.title">Preview / Edit</span>
+          <button id="preview-close-btn" type="button" class="pane-close">×</button>
+        </div>
+        <div class="pane-meta">
+          <input id="preview-name" placeholder="Name" data-i18n-placeholder="field.namePlaceholder" />
+          <input id="preview-folder" placeholder="Folder" data-i18n-placeholder="field.folderPlaceholder" />
+          <input id="preview-tags" placeholder="Tags (comma-separated)" data-i18n-placeholder="field.tagsPlaceholder" />
+          <button id="preview-save-btn" class="pane-save" type="button" data-i18n="common.save">Save</button>
+          <span id="preview-status" class="status"></span>
+        </div>
+        <div id="preview-editor" class="modal-editor"></div>
+      </div>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+    <script type="module" src="/import-export.js"></script>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+# Build environment for the Linux AppImage. Nothing has to be installed on the
+# host except Docker: `./build.sh` runs the whole build inside this image and
+# drops the result in dist/.
+FROM node:24-bookworm
+
+# electron-builder shells out to `file` while assembling the AppImage.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      file \
+ && rm -rf /var/lib/apt/lists/*
+
+# The build runs as the host user (see build.sh) so nothing in the mounted
+# source tree ends up root-owned. That user has no home directory inside the
+# container, so everything that wants to write a cache — npm, the Electron
+# download, electron-builder — is pointed at /cache, a named volume that is
+# writable by anyone and survives between builds.
+RUN mkdir -p /cache/home && chmod -R 777 /cache
+ENV HOME=/cache/home \
+    npm_config_cache=/cache/npm \
+    ELECTRON_CACHE=/cache/electron \
+    ELECTRON_BUILDER_CACHE=/cache/electron-builder
+
+WORKDIR /app

@@ -1,0 +1,974 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f6f8fa;
+  --color-border: #d8dee4;
+  --color-border-subtle: #eaeef2;
+  --color-text: #1f2328;
+  --color-text-secondary: #57606a;
+  --color-text-muted: #6e7781;
+  --color-text-faint: #8b949e;
+  --color-accent: #0969da;
+  --color-accent-text: #ffffff;
+  --color-success: #1a7f37;
+  --color-success-hover: #166a2f;
+  --color-danger: #cf222e;
+  --color-danger-hover: #a91f28;
+  --color-hover-bg: #eef1f4;
+  --color-hover-bg-strong: #e2e6ea;
+  --color-active-bg: #ddf0ff;
+  --color-folder-badge-bg: #ddf0ff;
+  --color-folder-badge-text: #0550ae;
+  --color-tag-badge-bg: #fbefff;
+  --color-tag-badge-text: #8250df;
+  --color-modal-overlay: rgba(31, 35, 40, 0.5);
+  --color-shadow: rgba(31, 35, 40, 0.15);
+  --color-shadow-strong: rgba(31, 35, 40, 0.25);
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #0d1117;
+  --color-bg-secondary: #161b22;
+  --color-border: #30363d;
+  --color-border-subtle: #21262d;
+  --color-text: #e6edf3;
+  --color-text-secondary: #9198a1;
+  --color-text-muted: #8b949e;
+  --color-text-faint: #6e7681;
+  --color-accent: #58a6ff;
+  --color-accent-text: #0d1117;
+  --color-success: #3fb950;
+  --color-success-hover: #2ea043;
+  --color-danger: #f85149;
+  --color-danger-hover: #da3633;
+  --color-hover-bg: #21262d;
+  --color-hover-bg-strong: #30363d;
+  --color-active-bg: #133a5e;
+  --color-folder-badge-bg: #133a5e;
+  --color-folder-badge-text: #79c0ff;
+  --color-tag-badge-bg: #3b1e54;
+  --color-tag-badge-text: #d2a8ff;
+  --color-modal-overlay: rgba(1, 4, 9, 0.7);
+  --color-shadow: rgba(0, 0, 0, 0.4);
+  --color-shadow-strong: rgba(0, 0, 0, 0.6);
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-secondary);
+  overflow: hidden;
+  transition: width 0.15s ease;
+}
+
+.app.sidebar-collapsed .sidebar {
+  width: 0;
+  min-width: 0;
+  border-right: none;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.brand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.brand-text {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: var(--color-text);
+}
+
+.sidebar-header {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sidebar-header input {
+  flex: 1;
+  min-width: 0;
+}
+
+.advanced-search {
+  display: flex;
+  gap: 10px;
+  padding: 0 10px 10px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.advanced-search label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.filters {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.folder-list-scroll {
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.folder-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.folder-row input {
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px 4px;
+}
+
+.list-header-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.list-header .filter-title {
+  margin-bottom: 0;
+}
+
+.filter-block + .filter-block {
+  margin-top: 8px;
+}
+
+.filter-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.filter-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-title-row .filter-title {
+  margin-bottom: 0;
+}
+
+.clear-link {
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 11px;
+  color: var(--color-accent);
+  cursor: pointer;
+  margin-bottom: 4px;
+}
+
+.clear-link:hover {
+  text-decoration: underline;
+}
+
+.chip-list ul.folder-tree {
+  list-style: none;
+  margin: 2px 0 0 12px;
+  padding: 0;
+}
+
+.chip-list > ul.folder-tree {
+  margin-left: 0;
+}
+
+.chip {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  margin: 2px 4px 2px 0;
+}
+
+.chip.active {
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+  border-color: var(--color-accent);
+}
+
+.doc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.selection-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  flex-shrink: 0;
+}
+
+.selection-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.selection-bar-row span {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  flex: 1;
+}
+
+.selection-open-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.selection-open-item {
+  text-align: left;
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+.doc-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  cursor: pointer;
+}
+
+.doc-select-checkbox {
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.doc-item:hover {
+  background: var(--color-hover-bg);
+}
+
+.doc-item.active {
+  background: var(--color-active-bg);
+}
+
+.doc-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.doc-name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.doc-badges {
+  margin-top: 3px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.doc-folder-badge,
+.doc-tag-badge {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.doc-folder-badge {
+  background: var(--color-folder-badge-bg);
+  color: var(--color-folder-badge-text);
+}
+
+.doc-tag-badge {
+  background: var(--color-tag-badge-bg);
+  color: var(--color-tag-badge-text);
+}
+
+.doc-timestamps {
+  margin-top: 4px;
+  display: flex;
+  gap: 10px;
+  font-size: 10px;
+  color: var(--color-text-faint);
+  white-space: nowrap;
+}
+
+.doc-actions {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+}
+
+.icon-btn {
+  border: none;
+  background: none;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.icon-btn:hover {
+  background: var(--color-hover-bg-strong);
+}
+
+.open-menu {
+  position: absolute;
+  top: 100%;
+  left: 10px;
+  z-index: 10;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px var(--color-shadow);
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  overflow: hidden;
+}
+
+.open-menu button {
+  border: none;
+  border-radius: 0;
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--color-bg);
+}
+
+.open-menu button:hover {
+  background: var(--color-hover-bg);
+}
+
+.pane-remove-group {
+  position: relative;
+  display: flex;
+}
+
+.pane-remove-group #remove-pane-btn {
+  border-radius: 6px 0 0 6px;
+}
+
+.pane-remove-group #remove-pane-menu-btn {
+  border-radius: 0 6px 6px 0;
+  border-left: none;
+  padding: 6px 8px;
+}
+
+.pane-remove-group button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.remove-pane-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px var(--color-shadow);
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  overflow: hidden;
+  padding: 4px 0;
+}
+
+.remove-pane-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.remove-pane-item:hover {
+  background: var(--color-hover-bg);
+}
+
+.remove-pane-clear {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  border-radius: 0;
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--color-bg);
+  margin-top: 4px;
+}
+
+.remove-pane-clear:hover {
+  background: var(--color-hover-bg);
+}
+
+.editor-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.panes-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.toolbar-left,
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Host for the per-group pane containers; only the active one is visible. */
+.panes-stack {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.group-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  padding: 6px 8px 0;
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.group-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  max-width: 220px;
+  padding: 6px 10px;
+  border: 1px solid var(--color-border);
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  background: var(--color-bg-secondary);
+  color: var(--color-text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.group-tab.active {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.group-tab-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.group-tab-close,
+.group-tab-add {
+  border: none;
+  background: none;
+  color: inherit;
+  padding: 0 4px;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.group-tab-close:hover,
+.group-tab-add:hover {
+  background: var(--color-border);
+}
+
+.group-tab-add {
+  flex: 0 0 auto;
+  align-self: center;
+  color: var(--color-text-muted);
+  font-size: 16px;
+  padding: 4px 8px;
+}
+
+.panes-container {
+  flex: 1;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.pane {
+  position: relative;
+  flex: 1 1 420px;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.pane-resize-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  cursor: col-resize;
+  z-index: 5;
+}
+
+.pane-resize-handle:hover {
+  background: var(--color-accent);
+  opacity: 0.5;
+}
+
+.pane-resize-left {
+  left: 0;
+}
+
+.pane-resize-right {
+  right: 0;
+}
+
+body.resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+.pane-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+/* Never wraps: with three or more panes the header is tight, and a title
+   breaking onto a second line would make that pane's header taller than its
+   neighbours'. */
+.pane-title {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Reads as one control rather than three more action buttons: it changes what
+   the editor looks like, it does not do anything to the document. */
+.pane-zoom {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.pane-zoom button {
+  border: none;
+  background: none;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  line-height: 1;
+  padding: 3px 6px;
+  cursor: pointer;
+}
+
+.pane-zoom button:hover:not(:disabled) {
+  background: var(--color-hover-bg);
+  color: var(--color-text);
+}
+
+.pane-zoom button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* Fixed width so counting up and down never nudges the header around — the
+   same reason the editable fields pin their two states to one box. */
+.pane-zoom .zoom-value {
+  min-width: 22px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  border-left: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+}
+
+.pane-new {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+}
+
+/* Icon-only on purpose: the header is tight with three or more panes, and a
+   fourth text button would push the pane title out of it. The box still
+   matches its neighbours — same border, same 6px of vertical padding — so it
+   reads as one of the buttons rather than something wedged between them. */
+.pane-header .pane-export {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  padding: 6px 7px;
+}
+
+.pane-header .pane-export:hover {
+  background: var(--color-hover-bg);
+  color: var(--color-text);
+}
+
+.pane-header .pane-export svg {
+  display: block;
+  width: 15px;
+  height: 15px;
+}
+
+.export-btn svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+}
+
+.pane-new:hover {
+  background: var(--color-hover-bg);
+}
+
+.pane-close {
+  border: none;
+  background: none;
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px 6px;
+  cursor: pointer;
+  color: var(--color-text-muted);
+}
+
+.pane-close:hover {
+  background: var(--color-hover-bg);
+  border-radius: 4px;
+}
+
+.pane-close:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.pane-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border-bottom: 1px solid var(--color-border);
+  flex-wrap: wrap;
+}
+
+.pane-meta input {
+  padding: 6px 8px;
+}
+
+.editable-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-bg-secondary);
+  padding: 4px 8px;
+}
+
+.pane-name-field {
+  flex: 2;
+  min-width: 120px;
+}
+
+.pane-folder-field,
+.pane-tags-field {
+  flex: 1;
+  min-width: 100px;
+}
+
+.field-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-faint);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.field-value-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.field-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: text;
+  font-size: 13px;
+}
+
+.field-text.placeholder {
+  color: var(--color-text-faint);
+  font-style: italic;
+}
+
+.field-edit-btn {
+  border: none;
+  background: none;
+  padding: 0 2px;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--color-text-faint);
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.field-edit-btn:hover {
+  color: var(--color-accent);
+  opacity: 1;
+}
+
+.field-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 13px;
+}
+
+/* `.pane-meta input` above (meant for the plain inputs in the preview dialog)
+   out-specifies `.field-input`, which is what padded the edit state. */
+.pane-meta .field-input {
+  padding: 0;
+}
+
+.field-input:focus {
+  outline: none;
+}
+
+.pane-editor {
+  flex: 1;
+  min-height: 0;
+}
+
+.status {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+button {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+button:hover {
+  background: var(--color-hover-bg);
+}
+
+.pane-save {
+  background: var(--color-success);
+  color: #fff;
+  border-color: var(--color-success);
+}
+
+.pane-save:hover {
+  background: var(--color-success-hover);
+}
+
+.pane-delete {
+  background: var(--color-danger);
+  color: #fff;
+  border-color: var(--color-danger);
+}
+
+.pane-delete:hover {
+  background: var(--color-danger-hover);
+}
+
+input {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--color-modal-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: var(--color-bg);
+  border-radius: 8px;
+  width: min(700px, 92vw);
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 12px 32px var(--color-shadow-strong);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border);
+  font-weight: 600;
+}
+
+/* The preview dialog gets a definite height so `flex: 1` below has real
+   space to hand out. Without it the dialog sizes to its content, the editor
+   is laid out at full document height and everything past the dialog's
+   bottom edge is clipped and unreachable. */
+#preview-modal .modal {
+  height: 85vh;
+}
+
+/* Same pair of rules the panes use — `min-height: 0` is what lets the editor
+   shrink to its container so its own scroller takes over. */
+.modal-editor {
+  flex: 1;
+  min-height: 0;
+}
+
+#preview-modal .modal-header {
+  cursor: move;
+  user-select: none;
+}
+
+#preview-modal .modal-header button {
+  cursor: pointer;
+}
+
+.autocomplete-dropdown {
+  position: fixed;
+  z-index: 200;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px var(--color-shadow);
+  max-height: 172px;
+  overflow-y: auto;
+}
+
+.autocomplete-item {
+  padding: 7px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.autocomplete-item:hover {
+  background: var(--color-hover-bg);
+}

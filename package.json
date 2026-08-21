@@ -1,0 +1,52 @@
+{
+  "name": "ac-json-storage",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Self-hosted JSON document storage and editor, as a desktop app",
+  "desktopName": "ac-json-storage.desktop",
+  "author": "acacar",
+  "main": "main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "electron": "^43.4.1",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.acacar.ac-json-storage",
+    "productName": "ac-json-storage",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main/**/*",
+      "renderer/**/*",
+      "build/icon.png",
+      "package.json"
+    ],
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Development",
+      "icon": "build/icons",
+      "syncDesktopName": true
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icons/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.developer-tools"
+    }
+  }
+}
