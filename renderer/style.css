@@ -972,3 +972,17 @@ input {
 .autocomplete-item:hover {
   background: var(--color-hover-bg);
 }
+
+/* The editor library renders its popups (context menu, tooltips) inside the
+   pane itself, and `.pane` clips its overflow — so a menu opened near the right
+   edge was cut off and looked like it slipped behind the neighbouring pane.
+   The library positions the popup content as an offset from this 0x0 anchor
+   box; pinning the anchor to the viewport origin turns those offsets into plain
+   viewport coordinates and lifts the menu out of every clipping ancestor, the
+   same way `.autocomplete-dropdown` escapes the sidebar. `!important` because
+   the library injects its own rule for this class at runtime, after us. */
+.jse-absolute-popup {
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+}
